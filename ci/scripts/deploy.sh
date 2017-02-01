@@ -8,6 +8,10 @@ source $project_dir/ci/utils/load-cf-env.sh
 source $project_dir/ci/utils/cf-helpers.sh
 
 cf_authenticate_and_target
+if [ $? != 0 ];
+then
+    echo "Error authenticating with cf"
+fi
 cf_target_org_and_space system chaos-loris
 
 cf_create_service p-mysql 100mb-dev chaos-loris-db
