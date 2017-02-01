@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: allomov/deploy-worker
+    tag: v1.0
+
+run:
+  path: pipeline-repo/ci/scripts/deploy.sh
+
+inputs:
+- name: pipeline-repo
+- name: built-binary

@@ -1,32 +1,38 @@
 resources:
-  - name: chaos-loris-config
-    type: git
-    check_every: 1d
-    source:
-      uri: https://github.com/agf234/altbosh.git
-      branch: master
+- name: pipeline-repo
+  type: git
+  source:
+    uri: https://github.com/Altoros/concourse-deploy-chaos-loris.git
+    branch: master
+- name: chaos-loris-repo
+  type: git
+  source:
+    uri: https://github.com/Altoros/chaos-loris.git
+    branch: master
 
 jobs:
-  - name: deploy-loris
-    plan:
-      - get: chaos-loris-config
-      - task: deploy
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: agf234/bosh-tools-awscli
-              tag: latest
-          run:
-            path: ./scripts/cl-deploy.sh
-            args: []
-          params:
+- name: deploy
+  plan:
+  - get: pipeline-repo
+  - task: deploy
+    file: pipeline-repo/ci/tasks/run-script.yml
+    params: 
+      SCRIPT: ci/scripts/cf-deploy.sh
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
+
+- name: deploy
+  plan:
+  - get: pipeline-repo
+  - task: deploy
+    file: pipeline-repo/ci/tasks/run-script.yml
 
   - name: create-apps-in-loris
     plan:
       - aggregate:
-        - get: chaos-loris-config
+        - get: pipeline-repo
           passed: [deploy-loris]
           serial: true
           trigger: true
@@ -46,7 +52,7 @@ jobs:
   - name: create-schedule
     plan:
       - aggregate:
-        - get: chaos-loris-config
+        - get: pipeline-repo
           passed: [deploy-loris]
           passed: [create-apps-in-loris]
           serial: false
@@ -67,7 +73,7 @@ jobs:
   - name: "clean-apps"
     plan:
       - aggregate:
-        - get: chaos-loris-config
+        - get: pipeline-repo
           passed: [deploy-loris]
           passed: [create-apps-in-loris]
           serial: true
