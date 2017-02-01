@@ -1,0 +1,88 @@
+resources:
+  - name: chaos-loris-config
+    type: git
+    check_every: 1d
+    source:
+      uri: https://github.com/agf234/altbosh.git
+      branch: master
+
+jobs:
+  - name: deploy-loris
+    plan:
+      - get: chaos-loris-config
+      - task: deploy
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: agf234/bosh-tools-awscli
+              tag: latest
+          run:
+            path: ./scripts/cl-deploy.sh
+            args: []
+          params:
+
+  - name: create-apps-in-loris
+    plan:
+      - aggregate:
+        - get: chaos-loris-config
+          passed: [deploy-loris]
+          serial: true
+          trigger: true
+      - task: create-apps
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: agf234/bosh-tools-awscli
+              tag: latest
+          run:
+            path: ./scripts/cl-create-apps.sh
+            args: []
+          params:
+
+  - name: create-schedule
+    plan:
+      - aggregate:
+        - get: chaos-loris-config
+          passed: [deploy-loris]
+          passed: [create-apps-in-loris]
+          serial: false
+      - task: create-schedule
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: agf234/bosh-tools-awscli
+              tag: latest
+          run:
+            path: ./scripts/cl-create-sched.sh
+            args: []
+          params:
+
+
+  - name: "clean-apps"
+    plan:
+      - aggregate:
+        - get: chaos-loris-config
+          passed: [deploy-loris]
+          passed: [create-apps-in-loris]
+          serial: true
+          trigger: false
+      - task: clean
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source:
+              repository: agf234/bosh-tools-awscli
+              tag: latest
+          run:
+            path: ./scripts/cl-cleanup.sh
+            args: []
+          params:
+
+
