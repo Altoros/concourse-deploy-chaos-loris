@@ -15,25 +15,50 @@ resources:
     interval: 10m
 
 jobs:
-- name: deploy
+- name: deploy-chaos-loris
   plan:
-  - get: pipeline-repo
-  - get: chaos-loris-repo
+  - aggregate:
+    - get: pipeline-repo
+    - get: chaos-loris-repo
+  - task: build
+    file: pipeline-repo/ci/tasks/build.yml
   - task: deploy
-    file: pipeline-repo/common/tasks/run-script.yml
+    file: pipeline-repo/ci/tasks/deploy.yml
     params: 
-      SCRIPT: ci/scripts/cf-deploy.sh
       VAULT_ADDR: {{vault-address}}
       VAULT_TOKEN: {{vault-token}}
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
-- name: create-default-schedule
+
+
+- name: create-schedule
   plan:
-    - aggregate:
-      - get: pipeline-repo
-        passed: [deploy]
-        serial: false
+    - get: pipeline-repo
+      passed: [deploy]
     - task: create-schedule
+      file: pipeline-repo/ci/tasks/deploy.yml
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: allomov/chaos-loris-worker
+            tag: v1.0
+        run:
+          path: ./scripts/cl-create-sched.sh
+          args: []
+        params:
+
+- name: udpate-apps
+  plan:
+  - get: pipeline-repo
+    passed: [create-schedule]
+  - name: create-apps-in-loris
+    plan:
+    - get: pipeline-repo
+      passed: [deploy-loris]
+      serial: true
+      trigger: true
+    - task: create-apps
       config:
         platform: linux
         image_resource:
@@ -42,33 +67,9 @@ jobs:
             repository: agf234/bosh-tools-awscli
             tag: latest
         run:
-          path: ./scripts/cl-create-sched.sh
+          path: ./scripts/cl-create-apps.sh
           args: []
         params:
-
-
-- name: deploy
-  plan:
-  - get: pipeline-repo
-  - name: create-apps-in-loris
-    plan:
-      - aggregate:
-        - get: pipeline-repo
-          passed: [deploy-loris]
-          serial: true
-          trigger: true
-      - task: create-apps
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: agf234/bosh-tools-awscli
-              tag: latest
-          run:
-            path: ./scripts/cl-create-apps.sh
-            args: []
-          params:
 
 
 

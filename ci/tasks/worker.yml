@@ -4,13 +4,12 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: allomov/deploy-worker
+    repository: allomov/chaos-loris
     tag: v1.0
 
 run:
-  path: pipeline-repo/ci/scripts/run-script.sh
+  path: pipeline-repo/ci/scripts/worker.sh
 
 inputs:
 - name: pipeline-repo
-outputs:
-- name: output
+- name: built-binary

@@ -4,7 +4,7 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: changeit # allomov/deploy-worker
+    repository: allomov/chaos-loris-build
     tag: v1.0
 
 run:
@@ -14,4 +14,4 @@ inputs:
 - name: pipeline-repo
 - name: chaos-loris-repo
 outputs:
-- name: built-binary
+- name: binary
