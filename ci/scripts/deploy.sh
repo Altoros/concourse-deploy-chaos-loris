@@ -8,11 +8,20 @@ source $project_dir/ci/utils/load-cf-env.sh
 source $project_dir/ci/utils/cf-helpers.sh
 
 cf_authenticate_and_target
+if [ $? != 0 ];
+then
+    echo "Error authenticating with cf"
+fi
 cf_target_org_and_space system chaos-loris
-
+if [ $? != 0 ];
+then
+    echo "Error setting up cf org and space "
+fi
 cf_create_service p-mysql 100mb-dev chaos-loris-db
-
-
+if [ $? != 0 ];
+then
+    echo "Error Creating cf service"
+fi
 
 # create manifest.yml:
 # ---
@@ -31,5 +40,9 @@ cf_create_service p-mysql 100mb-dev chaos-loris-db
 #   - chaos-loris-db
 
 cf push
+if [ $? != 0 ];
+then
+    echo "Error pushing app"
+fi
 
 # cf curl /v2/apps
