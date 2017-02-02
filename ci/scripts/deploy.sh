@@ -19,10 +19,10 @@ applications:
 - name: chaos-loris
   memory: 1G
   instances: 2
-  path: build-binary/chaos-loris.jar
+  path: chaos-loris.jar
   buildpack: https://github.com/cloudfoundry/java-buildpack.git
   env:
-    LORIS_CLOUDFOUNDRY_HOST: $CF_API_URL
+    LORIS_CLOUDFOUNDRY_HOST: $CF_API_DOMAIN
     LORIS_CLOUDFOUNDRY_PASSWORD: $CF_ADMIN_PASSWORD
     LORIS_CLOUDFOUNDRY_SKIPSSLVALIDATION: true
     LORIS_CLOUDFOUNDRY_USERNAME: $CF_ADMIN_USERNAME
