@@ -9,10 +9,10 @@ resources:
   source:
     uri: https://github.com/Altoros/chaos-loris.git
     branch: master
-- name: 10m
-  type: time
-  source:
-    interval: 10m
+# - name: 10m
+#   type: time
+#   source:
+#     interval: 10m
 
 jobs:
 - name: deploy-chaos-loris
@@ -31,67 +31,36 @@ jobs:
       PRODUCT_NAME: {{product-name}}
 
 
-- name: create-schedule
-  plan:
-    - get: pipeline-repo
-      passed: [deploy]
-    - task: create-schedule
-      file: pipeline-repo/ci/tasks/deploy.yml
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: allomov/chaos-loris-worker
-            tag: v1.0
-        run:
-          path: ./scripts/cl-create-sched.sh
-          args: []
-        params:
+# - name: create-schedule
+#   plan:
+#     - get: pipeline-repo
+#       passed: [deploy-chaos-loris]
+#     - task: create-schedule
+#       file: pipeline-repo/common/tasks/run-command.yml
+#       params:
+#         SCRIPT: ci/scripts/worker.sh
+#         COMMAND: create-schedule
 
-- name: udpate-apps
-  plan:
-  - get: pipeline-repo
-    passed: [create-schedule]
-  - name: create-apps-in-loris
-    plan:
-    - get: pipeline-repo
-      passed: [deploy-loris]
-      serial: true
-      trigger: true
-    - task: create-apps
-      config:
-        platform: linux
-        image_resource:
-          type: docker-image
-          source:
-            repository: agf234/bosh-tools-awscli
-            tag: latest
-        run:
-          path: ./scripts/cl-create-apps.sh
-          args: []
-        params:
-
-
-
-  - name: "clean-apps"
-    plan:
-      - aggregate:
-        - get: pipeline-repo
-          passed: [deploy-loris]
-          passed: [create-apps-in-loris]
-          serial: true
-          trigger: false
-      - task: clean
-        config:
-          platform: linux
-          image_resource:
-            type: docker-image
-            source:
-              repository: agf234/bosh-tools-awscli
-              tag: latest
-          run:
-            path: ./scripts/cl-cleanup.sh
-            args: []
-          params:
-
+# - name: udpate-apps
+#   plan:
+#   - get: pipeline-repo
+#     passed: [create-schedule]
+#   - name: create-apps-in-loris
+#     plan:
+#     - get: pipeline-repo
+#       passed: [deploy-loris]
+#       serial: true
+#       trigger: true
+#     - task: create-apps
+#       config:
+#         platform: linux
+#         image_resource:
+#           type: docker-image
+#           source:
+#             repository: agf234/bosh-tools-awscli
+#             tag: latest
+#         run:
+#           path: ./scripts/cl-create-apps.sh
+#           args: []
+#         params:
 
