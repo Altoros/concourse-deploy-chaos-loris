@@ -12,4 +12,3 @@ run:
 
 inputs:
 - name: pipeline-repo
-- name: binary
