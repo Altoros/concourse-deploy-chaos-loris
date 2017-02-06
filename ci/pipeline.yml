@@ -32,6 +32,7 @@ jobs:
   - aggregate:
     - get: pipeline-repo
 #      passed: [deploy-chaos-loris]
+       trigger: true
   - task: build
     file: pipeline-repo/ci/tasks/build-service-broker.yml
 
