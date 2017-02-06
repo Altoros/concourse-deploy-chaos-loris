@@ -18,23 +18,26 @@ chaos-loris-client $CHAOS_LORIS_COMMAND
 # Create schedule
 # delete chaos if it is already exist?
 # curl -k "https://$CHAOS_LORIS_HOST/schedules" -i -X POST -H 'Content-Type: application/json' -d '{
-#   "name" : "default123",
+#   "name" : "defdewault123",
 #   "expression" : "*/10 * * * * *"
 # }'
 
 # 
 
 # Create an app
-# CF_APP_GUID=3cab9f56-39a2-4d11-9880-a4e7b56a68f8
+# CF_APP_GUID=3e665949-6053-44d5-bf68-09c712a37687
 # curl -k "https://$CHAOS_LORIS_HOST/applications" -i -X POST -H 'Content-Type: application/json' -d "{\"applicationId\" : \"$CF_APP_GUID\"}"
 
 # Create chaoses
 # curl -k "https://$CHAOS_LORIS_HOST/chaoses" -i -X POST -H 'Content-Type: application/json' -d "{
-#   \"schedule\" : \"https://$CHAOS_LORIS_HOST/schedules/1\",
-#   \"application\" : \"http://localhost/applications/1\",
+#   \"schedule\" : \"http://$CHAOS_LORIS_HOST/schedules/3\",
+#   \"application\" : \"http://$CHAOS_LORIS_HOST/applications/1\",
 #   \"probability\" : 0.1
 # }"
 
 # List events
 
 # Clean up the env
+
+# curl -k "https://$CHAOS_LORIS_HOST/chaoses" -i -H 'Accept: application/hal+json'
+# curl -k -X DELETE "https://$CHAOS_LORIS_HOST/chaoses/1" -i -H 'Accept: application/hal+json'

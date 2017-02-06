@@ -8,11 +8,7 @@ resources:
   type: git
   source:
     uri: https://github.com/Altoros/chaos-loris.git
-    branch: master
-# - name: 10m
-#   type: time
-#   source:
-#     interval: 10m
+    branch: develop
 
 jobs:
 - name: deploy-chaos-loris
