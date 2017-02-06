@@ -16,7 +16,6 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-      trigger: true
     - get: chaos-loris-repo
   - task: build
     file: pipeline-repo/ci/tasks/build.yml
