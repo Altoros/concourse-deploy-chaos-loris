@@ -32,14 +32,7 @@ jobs:
     - get: pipeline-repo
       passed: [deploy-chaos-loris]
   - task: build
-    file: ./ci/tasks/build-service-broker.yml
-  - task: deploy
-    file: ./ci/tasks/deploy-service-broker.yml
-    params:
-      VAULT_ADDR: {{vault-address}}
-      VAULT_TOKEN: {{vault-token}}
-      FOUNDATION_NAME: {{foundation-name}}
-      PRODUCT_NAME: {{product-name}}
+    file: pipeline-repo/ci/tasks/build-service-broker.yml
 
 - name: register-service-broker
   plan:
@@ -48,11 +41,6 @@ jobs:
       passed: [deploy-service-broker]
   - task: deploy
     file: ./ci/tasks/deploy-service-broker.yml
-    params:
-      VAULT_ADDR: {{vault-address}}
-      VAULT_TOKEN: {{vault-token}}
-      FOUNDATION_NAME: {{foundation-name}}
-      PRODUCT_NAME: {{product-name}}
 
 # - name: create-schedule
 #   plan:
