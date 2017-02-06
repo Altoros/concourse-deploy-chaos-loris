@@ -31,7 +31,7 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-      passed: [deploy-chaos-loris]
+#      passed: [deploy-chaos-loris]
   - task: build
     file: pipeline-repo/ci/tasks/build-service-broker.yml
 
@@ -39,7 +39,7 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-      passed: [deploy-service-broker]
+#      passed: [deploy-service-broker]
   - task: deploy
     file: ./ci/tasks/deploy-service-broker.yml
 
