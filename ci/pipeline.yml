@@ -33,7 +33,7 @@ jobs:
     - get: pipeline-repo
 #      passed: [deploy-chaos-loris]
   - task: build
-    file: ci/tasks/build-service-broker.yml
+    file: pipeline-repo/ci/tasks/build-service-broker.yml
 
 - name: register-service-broker
   plan:
@@ -41,7 +41,7 @@ jobs:
     - get: pipeline-repo
 #      passed: [deploy-service-broker]
   - task: deploy
-    file: ci/tasks/deploy-service-broker.yml
+    file: pipeline-repo/ci/tasks/deploy-service-broker.yml
 
 # - name: create-schedule
 #   plan:
