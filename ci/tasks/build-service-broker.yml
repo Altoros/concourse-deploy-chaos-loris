@@ -11,7 +11,7 @@ run:
   path: pipeline-repo/ci/scripts/build-service-broker.sh
 
 inputs:
-- name: service-broker-repo
+- name: pipeline-repo
   path: go/src/github.com/Altoros/cf-chaos-loris-broker.git
 
 outputs:
