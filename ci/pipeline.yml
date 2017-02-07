@@ -36,7 +36,7 @@ jobs:
   - aggregate:
     - get: service-broker-repo 
     - get: pipeline-repo
-      passed: [deploy-chaos-loris]
+#      passed: [deploy-chaos-loris]
   - task: build
     file: pipeline-repo/ci/tasks/build-service-broker.yml
   - task: deploy
@@ -51,7 +51,7 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-      passed: [deploy-service-broker]
+#      passed: [deploy-service-broker]
   - task: register
     file: pipeline-repo/ci/tasks/register-service-broker.yml
     params:
@@ -59,18 +59,18 @@ jobs:
       VAULT_TOKEN: {{vault-token}}
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
-#- name: acceptance-test
-#  plan:
-#  - aggreagate:
-#    - get: pipeline-repo
-#      passed: [register-service-broker]
-#  - task: run-app-test
-#    file: pipeline-repo/common/tasks/run-acceptance-test.yml
-#    params:
-#      VAULT_ADDR: {{vault-address}}
-#      VAULT_TOKEN: {{vault-token}}
-#      FOUNDATION_NAME: {{foundation-name}}
-#      PRODUCT_NAME: {{product-name}}
+- name: acceptance-test
+  plan:
+  - aggreagate:
+    - get: pipeline-repo
+      passed: [register-service-broker]
+  - task: run-app-test
+    file: pipeline-repo/common/tasks/run-acceptance-test.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
 #  - task: run-sched-test
 #    file: pipeline-repo/common/tasks/run-acceptance-test.yml
 #    params:
