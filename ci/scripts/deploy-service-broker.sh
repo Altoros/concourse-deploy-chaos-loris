@@ -8,7 +8,6 @@ project_dir=$(readlink -f "$(dirname $0)/../..")
 source $project_dir/common/utils/load-cf-env.sh
 source $project_dir/common/utils/cf-helpers.sh
 
-
 cf_authenticate_and_target
 cf_target_org_and_space system chaos-loris
 
@@ -26,7 +25,7 @@ applications:
   services:
   - chaos-loris-broker-db
 EOS
-
+cd binary
 echo "##############################"
 cf push
 exit_on_error "Error pushing app"
