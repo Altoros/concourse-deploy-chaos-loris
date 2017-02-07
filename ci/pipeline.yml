@@ -31,14 +31,14 @@ jobs:
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
 
-- name: deploy-service-broker
+- name: build-service-broker
   plan:
   - aggregate:
     - get: service-broker-repo 
     - get: pipeline-repo
       trigger: true
   - task: build
-    file: pipeline-repo/ci/tasks/deploy-service-broker.yml
+    file: pipeline-repo/ci/tasks/build-service-broker.yml
 
 - name: register-service-broker
   plan:
