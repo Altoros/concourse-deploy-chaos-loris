@@ -4,9 +4,9 @@
 set -e
 
 
-project_dir=$(readlink -f "$(dirname $0)/../..")
-source $project_dir/common/utils/load-cf-env.sh
-source $project_dir/common/utils/cf-helpers.sh
+#project_dir=$(readlink -f "$(dirname $0)/../..")
+#source $project_dir/common/utils/load-cf-env.sh
+#source $project_dir/common/utils/cf-helpers.sh
 
 
 CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
