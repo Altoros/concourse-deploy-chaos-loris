@@ -64,7 +64,7 @@ jobs:
   - aggregate:
     - get: pipeline-repo
   - task: run-app-test
-    file: pipeline-repo/ci/tasks/run-acceptance-test.yml
+    file: pipeline-repo/ci/tasks/run-app-test.yml
     params:
       VAULT_ADDR: {{vault-address}}
       VAULT_TOKEN: {{vault-token}}
