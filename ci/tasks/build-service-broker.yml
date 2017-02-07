@@ -12,7 +12,7 @@ run:
 
 inputs:
 - name: pipeline-repo
-  path: go/src/github.com/Altoros/cf-chaos-loris-broker.git
+#  path: go/src/github.com/Altoros/cf-chaos-loris-broker.git
 
 outputs:
 - name: binary
