@@ -10,6 +10,10 @@ resources:
   source:
     uri: https://github.com/Altoros/chaos-loris.git
     branch: develop
+- name: service-broker-repo
+  type: git
+  source:
+    uri: https://github.com/Altoros/cf-chaos-loris-broker.git
 
 jobs:
 - name: deploy-chaos-loris
@@ -30,11 +34,12 @@ jobs:
 - name: deploy-service-broker
   plan:
   - aggregate:
+    - get: service-broker-repo 
     - get: pipeline-repo
 #      passed: [deploy-chaos-loris]
        trigger: true
   - task: build
-    file: pipeline-repo/ci/tasks/build-service-broker.yml
+    file: pipeline-repo/ci/tasks/deploy-service-broker.yml
 
 - name: register-service-broker
   plan:
@@ -42,7 +47,7 @@ jobs:
     - get: pipeline-repo
 #      passed: [deploy-service-broker]
   - task: deploy
-    file: pipeline-repo/ci/tasks/deploy-service-broker.yml
+    file: pipeline-repo/ci/tasks/register-service-broker.yml
 
 # - name: create-schedule
 #   plan:
