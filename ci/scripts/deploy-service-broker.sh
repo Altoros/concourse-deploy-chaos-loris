@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-set -e
+set -e -x
 
 ### Load env
 
 export GOPATH=./service-broker-repo
 cd ./service-broker-repo
-#go build 
-echo ok
+go build 
