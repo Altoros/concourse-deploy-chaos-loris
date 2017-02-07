@@ -36,8 +36,7 @@ jobs:
   - aggregate:
     - get: service-broker-repo 
     - get: pipeline-repo
-#      passed: [deploy-chaos-loris]
-       trigger: true
+      trigger: true
   - task: build
     file: pipeline-repo/ci/tasks/deploy-service-broker.yml
 
@@ -45,7 +44,6 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-#      passed: [deploy-service-broker]
   - task: register
     file: pipeline-repo/ci/tasks/register-service-broker.yml
 
