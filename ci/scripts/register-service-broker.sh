@@ -10,7 +10,7 @@ source $project_dir/common/utils/cf-helpers.sh
 cf_authenticate_and_target
 cf_target_org_and_space system chaos-loris
 
-pushd binary
+
 cat > manifest.yml <<EOS
 ---
 applications:
@@ -27,4 +27,4 @@ applications:
 EOS
 cf push
 exit_on_error "Error pushing app"
-popd
+
