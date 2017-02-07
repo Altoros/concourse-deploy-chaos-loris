@@ -16,7 +16,7 @@ exit_on_error "Error in cf taget command"
 cf_create_service p-mysql 100mb-dev chaos-loris-broker
 exit_on_error "Error creating service"
 set -x
-register_broker chaos-loris admin $CF_ADMIN_PASSWORD "https://chaos-loris-broker.$CF_APPS_DOMAIN"
+register_broker chaos-loris admin $CF_ADMIN_PASSWORD "https://chaos-loris.$CF_APPS_DOMAIN"
 exit_on_error "Error registering broker"
 
 enable_global_access chaos-loris
