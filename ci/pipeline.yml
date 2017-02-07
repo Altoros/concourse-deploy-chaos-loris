@@ -61,9 +61,8 @@ jobs:
       PRODUCT_NAME: {{product-name}}
 - name: acceptance-test
   plan:
-  - aggreagate:
+  - aggregate:
     - get: pipeline-repo
-  #    passed: [register-service-broker]
   - task: run-app-test
     file: pipeline-repo/ci/tasks/run-acceptance-test.yml
     params:
