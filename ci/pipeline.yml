@@ -65,7 +65,7 @@ jobs:
     - get: pipeline-repo
       passed: [register-service-broker]
   - task: run-app-test
-    file: pipeline-repo/common/tasks/run-acceptance-test.yml
+    file: pipeline-repo/ci/tasks/run-acceptance-test.yml
     params:
       VAULT_ADDR: {{vault-address}}
       VAULT_TOKEN: {{vault-token}}
