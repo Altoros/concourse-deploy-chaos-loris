@@ -39,6 +39,13 @@ jobs:
       trigger: true
   - task: build
     file: pipeline-repo/ci/tasks/build-service-broker.yml
+  - task: deploy
+    file: pipeline-repo/ci/tasks/deploy-service-broker.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
 
 - name: register-service-broker
   plan:
