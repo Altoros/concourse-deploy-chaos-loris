@@ -46,6 +46,11 @@ jobs:
     - get: pipeline-repo
   - task: register
     file: pipeline-repo/ci/tasks/register-service-broker.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
 
 # - name: create-schedule
 #   plan:
