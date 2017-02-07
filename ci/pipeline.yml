@@ -46,7 +46,7 @@ jobs:
   - aggregate:
     - get: pipeline-repo
 #      passed: [deploy-service-broker]
-  - task: deploy
+  - task: register
     file: pipeline-repo/ci/tasks/register-service-broker.yml
 
 # - name: create-schedule
