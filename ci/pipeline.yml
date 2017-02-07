@@ -60,36 +60,30 @@ jobs:
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
 
-# - name: create-schedule
-#   plan:
-#     - get: pipeline-repo
-#       passed: [deploy-chaos-loris]
-#     - task: create-schedule
-#       file: pipeline-repo/common/tasks/run-command.yml
-#       params:
-#         SCRIPT: ci/scripts/worker.sh
-#         COMMAND: create-schedule
-
-# - name: udpate-apps
-#   plan:
-#   - get: pipeline-repo
-#     passed: [create-schedule]
-#   - name: create-apps-in-loris
-#     plan:
-#     - get: pipeline-repo
-#       passed: [deploy-loris]
-#       serial: true
-#       trigger: true
-#     - task: create-apps
-#       config:
-#         platform: linux
-#         image_resource:
-#           type: docker-image
-#           source:
-#             repository: agf234/bosh-tools-awscli
-#             tag: latest
-#         run:
-#           path: ./scripts/cl-create-apps.sh
-#           args: []
-#         params:
+ - name: acceptance-test
+   plan:
+   - aggreagate:
+     - get: pipeline-repo
+       passed: [register-service-broker]
+   - task: run-app-test
+     file: pipeline-repo/common/tasks/run-acceptance-test.yml
+     params:
+       VAULT_ADDR: {{vault-address}}
+       VAULT_TOKEN: {{vault-token}}
+       FOUNDATION_NAME: {{foundation-name}}
+       PRODUCT_NAME: {{product-name}}
+   - task: run-sched-test
+     file: pipeline-repo/common/tasks/run-acceptance-test.yml
+     params:
+       VAULT_ADDR: {{vault-address}}
+       VAULT_TOKEN: {{vault-token}}
+       FOUNDATION_NAME: {{foundation-name}}
+       PRODUCT_NAME: {{product-name}}
+   - task: run-chaos-test
+     file: pipeline-repo/common/tasks/run-acceptance-test.yml
+     params:
+       VAULT_ADDR: {{vault-address}}
+       VAULT_TOKEN: {{vault-token}}
+       FOUNDATION_NAME: {{foundation-name}}
+       PRODUCT_NAME: {{product-name}}
 
