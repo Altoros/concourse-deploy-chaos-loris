@@ -31,7 +31,7 @@ jobs:
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
 
-- name: build-service-broker
+- name: deploy-service-broker
   plan:
   - aggregate:
     - get: service-broker-repo 
@@ -52,7 +52,7 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
-      passed: [build-service-broker]
+      passed: [deploy-service-broker]
   - task: register
     file: pipeline-repo/ci/tasks/register-service-broker.yml
     params:
