@@ -2,6 +2,8 @@
 
 ### Load env
 
+set -e
+
 project_dir=$(readlink -f "$(dirname $0)/../..")
 source $project_dir/common/utils/load-cf-env.sh
 source $project_dir/common/utils/cf-helpers.sh
@@ -25,7 +27,6 @@ applications:
   - chaos-loris-broker-db
 EOS
 
-set -e -x
 echo "##############################"
 cf push
 exit_on_error "Error pushing app"
