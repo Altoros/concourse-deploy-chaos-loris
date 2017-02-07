@@ -4,4 +4,6 @@ set -e
 ### Load env
 
 export GOPATH=./service-broker-repo
-go build
+cd ./service-broker-repo
+#go build 
+echo ok

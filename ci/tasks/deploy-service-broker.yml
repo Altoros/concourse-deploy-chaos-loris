@@ -12,3 +12,4 @@ run:
 
 inputs:
 - name: pipeline-repo
+- name: service-broker-repo
