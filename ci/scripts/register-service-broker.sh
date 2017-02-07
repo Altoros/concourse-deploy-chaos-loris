@@ -13,7 +13,7 @@ exit_on_error "Error in auth"
 cf_target_org_and_space system chaos-loris
 exit_on_error "Error in cf taget command"
 
-cf_create_service p-mysql 100mb-dev chaos-loris-broker-db
+cf_create_service p-mysql 100mb-dev chaos-loris-broker
 exit_on_error "Error creating service"
 
 register_broker chaos-loris-broker admin $CF_ADMIN_PASSWORD "https://chaos-loris-broker.$CF_APPS_DOMAIN"
