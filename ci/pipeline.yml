@@ -1,7 +1,7 @@
 resources:
 - name: pipeline-repo
   type: git
-  check: 1m
+  check: 2m
   source:
     uri: https://github.com/Altoros/concourse-deploy-chaos-loris.git
     branch: master
@@ -36,7 +36,6 @@ jobs:
   - aggregate:
     - get: service-broker-repo 
     - get: pipeline-repo
-      trigger: true
       passed: [deploy-chaos-loris]
   - task: build
     file: pipeline-repo/ci/tasks/build-service-broker.yml
