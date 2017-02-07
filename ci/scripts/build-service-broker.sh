@@ -12,6 +12,6 @@ cd go/src/github.com/Altoros/cf-chaos-loris-broker
 
 go build 
 
-cp cf-chaos-loris-broker ../../../../../../binary/
-cp plans.yml ../../../../../../binary/
+cp cf-chaos-loris-broker ../../../../../../../binary/
+cp plans.yml ../../../../../../../binary/
 
