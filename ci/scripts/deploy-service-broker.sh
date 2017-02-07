@@ -3,6 +3,6 @@ set -e -x
 
 ### Load env
 
-export GOPATH=./service-broker-repo
-cd ./service-broker-repo
+export GOPATH=$PWD/service-broker-repo
+cd service-broker-repo
 go build 
