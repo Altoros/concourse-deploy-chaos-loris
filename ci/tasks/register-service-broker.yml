@@ -8,7 +8,7 @@ image_resource:
     tag: v1.3
 
 run:
-  path: pipeline-repo/ci/scripts/deploy-service-broker.sh
+  path: pipeline-repo/ci/scripts/register-service-broker.sh
 
 inputs:
 - name: pipeline-repo
