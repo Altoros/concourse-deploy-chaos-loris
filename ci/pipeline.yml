@@ -59,31 +59,30 @@ jobs:
       VAULT_TOKEN: {{vault-token}}
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
-
- - name: acceptance-test
-   plan:
-   - aggreagate:
-     - get: pipeline-repo
-       passed: [register-service-broker]
-   - task: run-app-test
-     file: pipeline-repo/common/tasks/run-acceptance-test.yml
-     params:
-       VAULT_ADDR: {{vault-address}}
-       VAULT_TOKEN: {{vault-token}}
-       FOUNDATION_NAME: {{foundation-name}}
-       PRODUCT_NAME: {{product-name}}
-   - task: run-sched-test
-     file: pipeline-repo/common/tasks/run-acceptance-test.yml
-     params:
-       VAULT_ADDR: {{vault-address}}
-       VAULT_TOKEN: {{vault-token}}
-       FOUNDATION_NAME: {{foundation-name}}
-       PRODUCT_NAME: {{product-name}}
-   - task: run-chaos-test
-     file: pipeline-repo/common/tasks/run-acceptance-test.yml
-     params:
-       VAULT_ADDR: {{vault-address}}
-       VAULT_TOKEN: {{vault-token}}
-       FOUNDATION_NAME: {{foundation-name}}
-       PRODUCT_NAME: {{product-name}}
+- name: acceptance-test
+  plan:
+  - aggreagate:
+    - get: pipeline-repo
+      passed: [register-service-broker]
+  - task: run-app-test
+    file: pipeline-repo/common/tasks/run-acceptance-test.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
+  - task: run-sched-test
+    file: pipeline-repo/common/tasks/run-acceptance-test.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
+  - task: run-chaos-test
+    file: pipeline-repo/common/tasks/run-acceptance-test.yml
+    params:
+      VAULT_ADDR: {{vault-address}}
+      VAULT_TOKEN: {{vault-token}}
+      FOUNDATION_NAME: {{foundation-name}}
+      PRODUCT_NAME: {{product-name}}
 
