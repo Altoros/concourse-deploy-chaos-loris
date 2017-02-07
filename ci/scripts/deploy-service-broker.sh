@@ -10,7 +10,7 @@ source $project_dir/common/utils/cf-helpers.sh
 
 cf_authenticate_and_target
 cf_target_org_and_space system chaos-loris
-
+cd binary
 cat > manifest.yml <<EOS
 ---
 applications:
@@ -25,7 +25,7 @@ applications:
   services:
   - chaos-loris-broker-db
 EOS
-cd binary
+
 echo "##############################"
 cf push
 exit_on_error "Error pushing app"
