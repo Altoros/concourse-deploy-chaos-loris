@@ -16,8 +16,8 @@ exit_on_error "Error in cf taget command"
 cf_create_service p-mysql 100mb-dev chaos-loris-broker-db
 exit_on_error "Error creating service"
 
-register_broker 
+register_broker p-mysql chaos-loris-broker.apps.wdc1.itcna.vmware.com
 exit_on_error "Error registering broker"
 
-enable_global_access
+enable_global_access "100mb-dev"
 exit_on_error "Error enabling global access"
