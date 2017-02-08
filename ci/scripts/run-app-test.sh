@@ -3,23 +3,33 @@
 #
 set -e
 
+project_dir=$(readlink -f "$(dirname $0)/../..")
+source $project_dir/common/utils/load-cf-env.sh
 
-#project_dir=$(readlink -f "$(dirname $0)/../..")
-#source $project_dir/common/utils/load-cf-env.sh
-#source $project_dir/common/utils/cf-helpers.sh
+cd simple-victim-app
 
+cat > manifest.yml <<EOS
+---
+applications:
+- name: simple-victim-app
+  memory: 1G
+  instances: 3
+  path: .
+EOS
+cf push
 
 CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
-VICTIM_APP_NAME=$1
+VICTIM_APP_NAME=simple-victim-app
 APP_GUID=$(cf curl "/v2/apps" -X GET -H "Content-Type: application/x-www-form-urlencoded" -d "q=name:$VICTIM_APP_NAME" | jq -r .resources[0].metadata.guid)
 
-# This curl will return the url of all apps
-LIST_APPS_URL=`curl -k "https://$CHAOS_LORIS_DOMAIN/applications" -i -X POST -H 'Content-Type: application/json' -d "{
-  \"applicationId\" : \"$APP_GUID\"
-}"  `
+if curl -k "https://$CF_CL_URL/applications" -i -X GET -H 'Content-Type: application/json' | grep $APP_GUID;
+then
+   curl -k "https://$CF_CL_URL/applications/$APP_GUID" -i -X DELETE -H 'Content-Type: application/json'
+fi
 
-for i in $LIST_APPS_URL;
-do
-  echo "APP $int: $i";
-  let int=$((int))+1;
-done
+# This curl will return the url of all apps
+set -x
+APP_URL=`curl -k "https://$CF_CL_URL/applications" -i -X POST -H 'Content-Type: application/json' -d "{ 
+  \"applicationId\" : \"$APP_GUID\"
+}" | grep applicationID | awk -F: '{print $2}'`
+echo $APP_URL;
