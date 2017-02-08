@@ -59,7 +59,7 @@ echo "List of Chaoses: "
 curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '.'                                 
 
 CHAOS_NUMBER=`curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '. | .page.number' `
-SCHED_NUMBER=`curl -k "https://$CHAOS_LORIS_DOMAIN/schedules" -i -X GET -H 'Content-Type: application/json' |tail -1 | jq '. | .page.number'`
+SCHED_NUMBER=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' |tail -1 | jq '. | .page.number'`
 
 echo "Waiting for 30 minutes of schedule activity"
 while [ CANT -lt 60 ];
