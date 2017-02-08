@@ -62,7 +62,8 @@ CHAOS_NUMBER=`curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: a
 SCHED_NUMBER=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' |tail -1 | jq '. | .page.number'`
 
 echo "Waiting for 30 minutes of schedule activity"
-while [ CANT -lt 60 ];
+CANT=0;
+while [ $CANT -lt 60 ];
 do
   let CANT=$((CANT))+1;
   sleep 1;
