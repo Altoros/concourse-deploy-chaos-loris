@@ -4,8 +4,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: agf234/test-chaos-loris
-    tag: "1.2"
+    repository: allomov/cf-cli
+    tag: "1.3"
 
 run:
   path: pipeline-repo/ci/scripts/run-app-test.sh
