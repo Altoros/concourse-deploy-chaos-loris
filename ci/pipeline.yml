@@ -67,6 +67,7 @@ jobs:
   plan:
   - aggregate:
     - get: pipeline-repo
+    - get: simple-victim-app
   - task: run-app-test
     file: pipeline-repo/ci/tasks/run-app-test.yml
     params:
