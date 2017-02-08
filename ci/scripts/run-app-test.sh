@@ -9,7 +9,7 @@ source $project_dir/common/utils/cf-helpers.sh
 
 
 CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
-VICTIM_APP_NAME=$1
+VICTIM_APP_NAME=victim1
 APP_GUID=$(cf curl "/v2/apps" -X GET -H "Content-Type: application/x-www-form-urlencoded" -d "q=name:$VICTIM_APP_NAME" | jq -r .resources[0].metadata.guid)
 
 # This curl will return the url of all apps
