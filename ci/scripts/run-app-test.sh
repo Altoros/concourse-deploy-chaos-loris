@@ -71,7 +71,7 @@ do
 done
 echo                                                                                                                             
 echo "Events: "
-curl -k "https://$CF_CL_URL/events" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq ','
+curl -k "https://$CF_CL_URL/events" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '.'
 echo "Delete the Chaos"
 curl -k "https://$CF_CL_URL/chaoses/$CHAOS_NUMBER" -i -X DELETE -H 'Content-Type: application/json' 
 echo "Delete the Schedule"
