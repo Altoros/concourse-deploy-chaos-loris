@@ -45,7 +45,7 @@ curl -k "https://$CF_CL_URL/schedules" -i -X POST -H 'Content-Type: application/
 }" | grep Location | awk '{print $2}' | tr -d '"';                                                                                      
                                                                                                                                         
 echo "********************************"                                                                                                 
-SCHEDULE_URL=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq -r "._embedded.schedules[] | select ( .name == "$SCHED_HASH") ._links.self.href";`
+SCHEDULE_URL=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq -r "._embedded.schedules[] | select ( .name == \"$SCHED_HASH\") ._links.self.href";`
 echo "********************************"                                                                                                 
 
 set -x                                                                                                                                  
