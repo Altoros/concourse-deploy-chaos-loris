@@ -16,7 +16,8 @@ APP_GUID=$(cf curl "/v2/apps" -X GET -H "Content-Type: application/x-www-form-ur
 LIST_APPS_URL=`curl -k "https://$CF_CL_URL/applications" -i -X POST -H 'Content-Type: application/json' -d "{
   \"applicationId\" : \"$APP_GUID\"
 }"`
-
+echo $LIST_APPS_URL;
+exit 0
 for i in $LIST_APPS_URL;
 do
   echo "APP $int: $i";
