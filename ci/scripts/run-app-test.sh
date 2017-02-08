@@ -33,7 +33,7 @@ curl -k "https://$CF_CL_URL/applications" -i -X POST -H 'Content-Type: applicati
 #   curl -k "https://$CF_CL_URL/applications/$APP_GUID" -i -X DELETE -H 'Content-Type: application/json'
 #fi   
 echo $APP_URL;  
-set -x          
+
 SCHED_HASH=`cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w 12 | head -n 1`                                                                
 echo "########################################"                                                                                         
 echo " SCHEDULE HASH IS: $SCHED_HASH"                                                                                                   
@@ -45,11 +45,9 @@ curl -k "https://$CF_CL_URL/schedules" -i -X POST -H 'Content-Type: application/
 }" | grep Location | awk '{print $2}' | tr -d '"';                                                                                      
                                                                                                                                         
 echo "********************************"                                                                                                 
-curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '.' ;                               
+SCHEDULE_URL=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq -r '._embedded.schedules[] | select ( .name == "IOCTzrNqkhae") ._links.self.href';`
 echo "********************************"                                                                                                 
-exit 0                                                                                                                                  
-SCHEDULE_URL=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' `;                                   
-                                                                                                                                        
+
 set -x                                                                                                                                  
 echo " create a chaos ** "                                                                                                              
 curl -k "https://$CF_CL_URL/chaoses" -i -X POST -H 'Content-Type: application/json' -d "{                                               
@@ -60,7 +58,8 @@ curl -k "https://$CF_CL_URL/chaoses" -i -X POST -H 'Content-Type: application/js
                                                                                                                                         
 # List Chaoses                                                                                                                          
                                                                                                                                         
-curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' #| tail -1 #| jq '.'                                 
-                                                                                                                                        
+curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '.'                                 
+
+exit 0
                                                                                                                                         
 curl -k "https://$CHAOS_LORIS_DOMAIN/chaoses/$CHAOS_NUMBER -i -X DELETE -H 'Content-Type: application/json'  
