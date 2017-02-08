@@ -17,7 +17,6 @@ applications:
   path: .
 EOS
 cf push
-set -x
 CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
 VICTIM_APP_NAME=simple-victim-app
 APP_GUID=`cf curl "/v2/apps" -X GET -H "Content-Type: application/x-www-form-urlencoded" -d "q=name:$VICTIM_APP_NAME" | jq -r .resources[0].metadata.guid`
@@ -48,7 +47,6 @@ echo "********************************"
 SCHEDULE_URL=`curl -k "https://$CF_CL_URL/schedules" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq -r "._embedded.schedules[] | select ( .name == \"$SCHED_HASH\") ._links.self.href";`
 echo "********************************"                                                                                                 
 
-set -x                                                                                                                                  
 echo " create a chaos ** "                                                                                                              
 curl -k "https://$CF_CL_URL/chaoses" -i -X POST -H 'Content-Type: application/json' -d "{                                               
   \"schedule\" : \"$SCHEDULE_URL\",                                                                                                     
@@ -57,9 +55,23 @@ curl -k "https://$CF_CL_URL/chaoses" -i -X POST -H 'Content-Type: application/js
 }" 1> /dev/null;                                                                                                                        
                                                                                                                                         
 # List Chaoses                                                                                                                          
-                                                                                                                                        
+echo "List of Chaoses: "                                                                                                                                        
 curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '.'                                 
 
-exit 0
-                                                                                                                                        
-curl -k "https://$CHAOS_LORIS_DOMAIN/chaoses/$CHAOS_NUMBER -i -X DELETE -H 'Content-Type: application/json'  
+CHAOS_NUMBER=`curl -k "https://$CF_CL_URL/chaoses" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq '. | .page.number' `
+SCHED_NUMBER=`curl -k "https://$CHAOS_LORIS_DOMAIN/schedules" -i -X GET -H 'Content-Type: application/json' |tail -1 | jq '. | .page.number'`
+
+echo "Waiting for 30 minutes of schedule activity"
+while [ CANT -lt 60 ];
+do
+  let CANT=$((CANT))+1;
+  sleep 1;
+  printf ".";
+done
+echo                                                                                                                             
+echo "Events: "
+curl -k "https://$CL_CF_URL/events" -i -X GET -H 'Content-Type: application/json' | tail -1 | jq ','
+echo "Delete the Chaos"
+curl -k "https://$CL_CF_URL/chaoses/$CHAOS_NUMBER" -i -X DELETE -H 'Content-Type: application/json' 
+echo "Delete the Schedule"
+curl -k "https://$CL_CF_URL/schedules/$SCHED_NUMBER" -i -X DELETE -H 'Content-Type: application/json'
