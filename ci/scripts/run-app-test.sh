@@ -5,7 +5,23 @@ set -e
 
 project_dir=$(readlink -f "$(dirname $0)/../..")
 source $project_dir/common/utils/load-cf-env.sh
-source $project_dir/common/utils/cf-helpers.sh
+
+cd simple-victim-app
+
+cat > manifest.yml <<EOS
+---
+applications:
+- name: simple-victim-app
+  memory: 1G
+  instances: 2
+  path: ./app.rb
+  env:
+    LORIS_CLOUDFOUNDRY_HOST: $CF_API_DOMAIN
+    LORIS_CLOUDFOUNDRY_PASSWORD: $CF_ADMIN_PASSWORD
+    LORIS_CLOUDFOUNDRY_SKIPSSLVALIDATION: true
+    LORIS_CLOUDFOUNDRY_USERNAME: $CF_ADMIN_USERNAME
+EOS
+cf push
 
 CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
 VICTIM_APP_NAME=victim1

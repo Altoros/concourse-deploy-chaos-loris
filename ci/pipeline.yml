@@ -14,6 +14,10 @@ resources:
   type: git
   source:
     uri: https://github.com/Altoros/cf-chaos-loris-broker.git
+- name: simple-victim-app
+  type: git
+  source:
+    uri: https://github.com/allomov/super-simple-sintara-app.git
 
 jobs:
 - name: deploy-chaos-loris
@@ -70,6 +74,7 @@ jobs:
       VAULT_TOKEN: {{vault-token}}
       FOUNDATION_NAME: {{foundation-name}}
       PRODUCT_NAME: {{product-name}}
+
 #  - task: run-sched-test
 #    file: pipeline-repo/common/tasks/run-acceptance-test.yml
 #    params:
