@@ -10,5 +10,6 @@ RUN unzip vault.zip
 RUN mv vault /usr/local/bin
 RUN chmod +x /usr/local/bin/vault
 RUN rm *
+RUN apk add jq
 
 # clean apk cache
