@@ -13,13 +13,8 @@ cat > manifest.yml <<EOS
 applications:
 - name: simple-victim-app
   memory: 1G
-  instances: 2
-  path: ./app.rb
-  env:
-    LORIS_CLOUDFOUNDRY_HOST: $CF_API_DOMAIN
-    LORIS_CLOUDFOUNDRY_PASSWORD: $CF_ADMIN_PASSWORD
-    LORIS_CLOUDFOUNDRY_SKIPSSLVALIDATION: true
-    LORIS_CLOUDFOUNDRY_USERNAME: $CF_ADMIN_USERNAME
+  instances: 3
+  path: .
 EOS
 cf push
 
