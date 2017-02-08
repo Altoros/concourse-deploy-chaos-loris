@@ -22,9 +22,14 @@ CF_CL_URL=chaos-loris.$CF_APPS_DOMAIN
 VICTIM_APP_NAME=simple-victim-app
 APP_GUID=$(cf curl "/v2/apps" -X GET -H "Content-Type: application/x-www-form-urlencoded" -d "q=name:$VICTIM_APP_NAME" | jq -r .resources[0].metadata.guid)
 
+if curl -k "https://$CF_CL_URL/applications" -i -X GET -H 'Content-Type: application/json' | grep $APP_GUID;
+then
+   curl -k "https://$CF_CL_URL/applications/$APP_GUID" -i -X DELETE -H 'Content-Type: application/json'
+fi
+
 # This curl will return the url of all apps
 set -x
-LIST_APPS_URL=`curl -k "https://$CF_CL_URL/applications" -i -X POST -H 'Content-Type: application/json' -d "{
+APP_URL=`curl -k "https://$CF_CL_URL/applications" -i -X POST -H 'Content-Type: application/json' -d "{ 
   \"applicationId\" : \"$APP_GUID\"
-}"`
-echo $LIST_APPS_URL;
+}" | grep applicationID | awk -F: '{print $2}'`
+echo $APP_URL;
