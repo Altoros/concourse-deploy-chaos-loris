@@ -10,6 +10,8 @@ source $project_dir/common/utils/cf-helpers.sh
 
 cf_authenticate_and_target
 cf_target_org_and_space system chaos-loris
+cf_create_service p-mysql 100mb-dev chaos-loris-broker-db
+
 cd binary
 cat > manifest.yml <<EOS
 ---
