@@ -3,8 +3,9 @@ resources:
   type: git
   check: 2m
   source:
-    uri: https://github.com/Altoros/concourse-deploy-chaos-loris.git
-    branch: master
+    uri: {{pipeline-repo}}
+    branch: {{pipeline-repo-brunch}}
+    private_key: {{pipeline-repo-private-key}}
 - name: chaos-loris-repo
   type: git
   source:
